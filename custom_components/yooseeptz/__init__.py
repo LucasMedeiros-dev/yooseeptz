@@ -1,4 +1,4 @@
-DOMAIN = "ptz_newcam"
+DOMAIN = "yooseeptz"
 import socket
 from pathlib import Path
 import json
