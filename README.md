@@ -18,7 +18,8 @@ In order to use this custom component, capture your camera signal with [motionEy
 
 ## Disclaimer
 **I only own a Yoosee , GWIPC marked camera, so if this component don't work for your camera you need to provide all the necessary data for further updates.**
-**I will only add support to previous supported cameras rebasing @Carvalr code**
+**In this first release I will only be adding support to previous supported cameras rebasing @Carvalr code**
+**I cannot verify which cameras work, please test and open an issue telling me your experience, with the model of the camera and type of protocol**
 ## Considerations
 1. GWIPC cameras do not require user and password to connect to PTZ TCP controls.
 2. Presets are manually configured in a local json database and are not synced with the app.
