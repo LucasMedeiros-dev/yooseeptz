@@ -1,34 +1,23 @@
 DOMAIN = "yooseeptz"
+
+#############################################################################################################
+
 import socket
 from pathlib import Path
 import json
 import logging
 import time
-ATTR_HOST = "host" # Receives the host inputed in the services
-ATTR_PORT = "port" # Receives the port inputed in the services
-ATTR_PROTOCOL = "protocol" # Receives the protocol inputed in the services
-ATTR_DIRECTION = "direction" # Receives the direction inputed in the services, used in move function
-ATTR_DEVICEID= "device_id" # Receives the Device id from the target selector
-ATTR_STEPS_X = 'x_steps' # Receives the Steps from Camera creation
-ATTR_STEPS_Y = 'y_steps' # Receives the Steps from camera creation
-ATTR_PRES_NAME = 'preset_name' # Receives the preset name from HA, used in create_preset function/ go_to_preset
-ATTR_PRES_POS_X = 'preset_position_x' #  Receives the preset position from HA, to be stored ( go_to_preset )
-ATTR_PRES_POS_Y = 'preset_position_y' # Receives the preset position from HA, to be store ( go_to_preset )
-TCP_PTZ_COMMAND = "Content-length: strlen(Content-type)\n" + "Content-type: ptzCmd:" # A default TCP command extracted from wireshark
-TCP_PTZ_HEADERS = ( # Default headers extracted from wireshark to make the camera move (TCP)
-    "CSeq: 0\n"
-    + "LibVLC/2.2.1 (LIVE555 Streaming Media v2014.07.25)\n"
-    + "Accept: application/sdp\n"
-) 
-DBPATH = 'custom_components/ptz_newcam/db/' # Location where the DB is Stored
+from .consts import *
 
+#############################################################################################################
 _LOGGER = logging.getLogger(__name__) # Logger
 
 def setup(hass, config):
     """Set up is called when Home Assistant is loading our component."""
 
-    if not Path(DBPATH).parent.is_dir(): # Check if dir is bd dir is not present
-        Path(DBPATH).parent.mkdir() # if not present, create it
+
+    if not Path(DBPATH).is_dir(): # Check if dir is bd dir is not present
+        Path(DBPATH).mkdir() # if not present, create it
         
     
     def add_camera_ptz(call):
@@ -39,6 +28,11 @@ def setup(hass, config):
         device_id = call.data.get(ATTR_DEVICEID) # get device_id from HA service
         steps_x = call.data.get(ATTR_STEPS_X) # get steps from HA service
         steps_y = call.data.get(ATTR_STEPS_Y) # get steps from HA service
+        if not call.data.get(ATTR_ONVIF_METHOD) == None:
+            method = call.data.get(ATTR_ONVIF_METHOD)
+        else:
+            method = None
+
         device_qnt = range(len(device_id)) # Device quantity is the range of the device id quantity, used to make a counter, if multiple cameras are selected.
 
         for devices in device_qnt: # a loop for each device selected
@@ -47,13 +41,24 @@ def setup(hass, config):
                     device = json.load(f) # Try to load if it's already existing
                 except:
                     device = {} # create an empty dict to be used
-                device.update({'camera':{\
-                    'host': host,\
-                        'port': port,\
-                            'protocol': protocol,\
-                                'steps_x': steps_x,\
-                                    'steps_y': steps_y\
-                    }})  # Update the dict with the new keys and coordinates
+                if not method:
+                    device.update({'camera':{\
+                        'host': host,\
+                            'port': port,\
+                                'protocol': protocol,\
+                                    'steps_x': steps_x,\
+                                        'steps_y': steps_y\
+                        }})  # Update the dict with the new keys and coordinates
+                else:
+                    device.update({'camera':{\
+                        'host': host,\
+                            'port': port,\
+                                'protocol': protocol,\
+                                    'method':method,\
+                                        'steps_x': steps_x,\
+                                            'steps_y': steps_y\
+                        }})  # Update the dict with the new keys and coordinates
+                    
                 f.close() # Close the file
                 Path(DBPATH+device_id[devices]+'.json').unlink() # Delete the previous file
                 f = open(DBPATH + device_id[devices] + '.json','a') # Open a new one
