@@ -97,18 +97,6 @@ add_camera_ptz:
           mode: dropdown
           options:
             - 'TCP'
-    onvif_method:
-      name: Onvif Method
-      example: 'ONVIF method'
-      description: Sets some methods to move specific cameras (Other cameras can work, but no guarantee)
-      required: false
-      selector:
-        select:
-          mode: dropdown
-          options:
-            - 'YCC365'
-            - 'Y05'
-            - 'YOOSEE'
     host:
       name: Host
       example: '192.168.1.5'

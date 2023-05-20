@@ -18,7 +18,7 @@ TCP_PTZ_HEADERS = ( # Default headers extracted from wireshark to make the camer
     + "Accept: application/sdp\n"
 ) 
 #### ONVIF ONLY #############################################################################################
-ATTR_ONVIF_METHOD = 'onvif_method'
+ATTR_ONVIF_METHOD = None
 
 
 #############################################################################################################
