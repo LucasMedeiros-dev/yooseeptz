@@ -96,7 +96,6 @@ add_camera_ptz:
         select:
           mode: dropdown
           options:
-            - 'ONVIF'
             - 'TCP'
     onvif_method:
       name: Onvif Method

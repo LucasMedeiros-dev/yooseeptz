@@ -80,8 +80,6 @@ def setup(hass, config):
             host =  device_camera.get('host')
             port = device_camera.get('port')
             
-            if protocol == "ONVIF":
-                ...
 
             if protocol == "TCP":
 
