@@ -13,7 +13,7 @@ This is a solution to use the pan and tilt functions into Home Assistant cards.
 All of these data was obtained using Wireshark.
 
 ## Disclaimer
-**I only own a Yoosee , GWIPC marked camera, so if this component don't work for your camera you need to provide all the necessary data for further updates.****
+**I only own a Yoosee , GWIPC marked camera, so if this component don't work for your camera you need to provide all the necessary data for further updates.**
 **I cannot verify which cameras work, please test and open an issue telling me your experience, with the model of the camera and type of protocol**
 ## Considerations
 1. GWIPC cameras do not require user and password to connect to PTZ TCP controls.
